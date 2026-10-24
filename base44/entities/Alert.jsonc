@@ -1,1 +1,93 @@
-
+{
+  "name": "Alert",
+  "type": "object",
+  "properties": {
+    "device_code": {
+      "type": "string",
+      "title": "Device code"
+    },
+    "device_name": {
+      "type": "string",
+      "title": "Device name"
+    },
+    "village": {
+      "type": "string",
+      "title": "Village"
+    },
+    "type": {
+      "type": "string",
+      "title": "Alert type",
+      "enum": [
+        "tds",
+        "turbidity",
+        "temperature",
+        "level",
+        "offline",
+        "maintenance"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "title": "Severity",
+      "enum": [
+        "critical",
+        "warning",
+        "info"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "title": "Message"
+    },
+    "reading_value": {
+      "type": "number",
+      "title": "Reading value"
+    },
+    "threshold_value": {
+      "type": "number",
+      "title": "Threshold value"
+    },
+    "unit": {
+      "type": "string",
+      "title": "Unit"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "active",
+        "acknowledged",
+        "resolved"
+      ],
+      "default": "active"
+    },
+    "raised_at": {
+      "type": "string",
+      "title": "Raised at",
+      "format": "date-time"
+    },
+    "acknowledged_by": {
+      "type": "string",
+      "title": "Acknowledged by"
+    },
+    "acknowledged_at": {
+      "type": "string",
+      "title": "Acknowledged at",
+      "format": "date-time"
+    },
+    "resolved_at": {
+      "type": "string",
+      "title": "Resolved at",
+      "format": "date-time"
+    },
+    "notify_channels": {
+      "type": "string",
+      "title": "Notification channels"
+    }
+  },
+  "required": [
+    "device_code",
+    "severity",
+    "message"
+  ]
+}
