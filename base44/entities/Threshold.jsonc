@@ -1,1 +1,56 @@
-
+{
+  "name": "Threshold",
+  "type": "object",
+  "properties": {
+    "device_code": {
+      "type": "string",
+      "title": "Device code"
+    },
+    "tds_max": {
+      "type": "number",
+      "title": "TDS max (ppm)",
+      "default": 500
+    },
+    "tds_warn": {
+      "type": "number",
+      "title": "TDS warning (ppm)",
+      "default": 300
+    },
+    "turbidity_max": {
+      "type": "number",
+      "title": "Turbidity max (NTU)",
+      "default": 5
+    },
+    "turbidity_warn": {
+      "type": "number",
+      "title": "Turbidity warning (NTU)",
+      "default": 3
+    },
+    "temp_min": {
+      "type": "number",
+      "title": "Temperature min (\u00b0C)",
+      "default": 10
+    },
+    "temp_max": {
+      "type": "number",
+      "title": "Temperature max (\u00b0C)",
+      "default": 30
+    },
+    "level_min": {
+      "type": "number",
+      "title": "Water level min (%)",
+      "default": 20
+    },
+    "updated_by": {
+      "type": "string",
+      "title": "Updated by"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "device_code"
+  ]
+}
