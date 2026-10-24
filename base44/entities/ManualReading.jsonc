@@ -1,1 +1,55 @@
-
+{
+  "name": "ManualReading",
+  "type": "object",
+  "properties": {
+    "device_code": {
+      "type": "string",
+      "title": "Device code"
+    },
+    "device_name": {
+      "type": "string",
+      "title": "Device name"
+    },
+    "kit_tds": {
+      "type": "number",
+      "title": "Test kit TDS (ppm)"
+    },
+    "kit_turbidity": {
+      "type": "number",
+      "title": "Test kit turbidity (NTU)"
+    },
+    "kit_temperature": {
+      "type": "number",
+      "title": "Test kit temperature (\u00b0C)"
+    },
+    "sensor_tds": {
+      "type": "number",
+      "title": "Sensor TDS at time (ppm)"
+    },
+    "sensor_turbidity": {
+      "type": "number",
+      "title": "Sensor turbidity at time (NTU)"
+    },
+    "sensor_temperature": {
+      "type": "number",
+      "title": "Sensor temperature at time (\u00b0C)"
+    },
+    "recorded_at": {
+      "type": "string",
+      "title": "Sample time",
+      "format": "date-time"
+    },
+    "entered_by": {
+      "type": "string",
+      "title": "Entered by"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "device_code",
+    "recorded_at"
+  ]
+}
