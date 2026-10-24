@@ -1,1 +1,89 @@
-
+{
+  "name": "Device",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Unit name"
+    },
+    "code": {
+      "type": "string",
+      "title": "Device code"
+    },
+    "village": {
+      "type": "string",
+      "title": "Village"
+    },
+    "district": {
+      "type": "string",
+      "title": "District"
+    },
+    "state": {
+      "type": "string",
+      "title": "State"
+    },
+    "location_tag": {
+      "type": "string",
+      "title": "Location tag"
+    },
+    "lat": {
+      "type": "number",
+      "title": "Latitude"
+    },
+    "lng": {
+      "type": "number",
+      "title": "Longitude"
+    },
+    "mining_affected": {
+      "type": "boolean",
+      "title": "Mining affected",
+      "default": false
+    },
+    "population_served": {
+      "type": "number",
+      "title": "Population served"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "online",
+        "offline",
+        "maintenance"
+      ],
+      "default": "online"
+    },
+    "last_seen": {
+      "type": "string",
+      "title": "Last seen",
+      "format": "date-time"
+    },
+    "filter_health": {
+      "type": "number",
+      "title": "Filter health %",
+      "default": 100
+    },
+    "total_cycles": {
+      "type": "number",
+      "title": "Total re-filter cycles",
+      "default": 0
+    },
+    "firmware": {
+      "type": "string",
+      "title": "Firmware version"
+    },
+    "installed_on": {
+      "type": "string",
+      "title": "Installed on"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "name",
+    "code",
+    "village"
+  ]
+}
