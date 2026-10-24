@@ -1,1 +1,25 @@
-
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "duty_role": {
+      "type": "string",
+      "title": "Duty role",
+      "enum": [
+        "admin",
+        "health_officer",
+        "operator",
+        "viewer"
+      ],
+      "default": "viewer"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Phone"
+    },
+    "village": {
+      "type": "string",
+      "title": "Assigned village"
+    }
+  }
+}
