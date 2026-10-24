@@ -1,1 +1,81 @@
-
+{
+  "name": "ControlLog",
+  "type": "object",
+  "properties": {
+    "device_code": {
+      "type": "string",
+      "title": "Device code"
+    },
+    "device_name": {
+      "type": "string",
+      "title": "Device name"
+    },
+    "village": {
+      "type": "string",
+      "title": "Village"
+    },
+    "stage": {
+      "type": "string",
+      "title": "Stage",
+      "enum": [
+        "sampling",
+        "compare",
+        "hold",
+        "re-filter",
+        "release",
+        "escalate"
+      ]
+    },
+    "decision": {
+      "type": "string",
+      "title": "Decision",
+      "enum": [
+        "safe",
+        "unsafe",
+        "recovered"
+      ]
+    },
+    "detail": {
+      "type": "string",
+      "title": "Detail"
+    },
+    "tds": {
+      "type": "number",
+      "title": "TDS (ppm)"
+    },
+    "turbidity": {
+      "type": "number",
+      "title": "Turbidity (NTU)"
+    },
+    "temperature": {
+      "type": "number",
+      "title": "Temperature (\u00b0C)"
+    },
+    "level": {
+      "type": "number",
+      "title": "Water level (%)"
+    },
+    "cycle": {
+      "type": "number",
+      "title": "Cycle"
+    },
+    "valve": {
+      "type": "string",
+      "title": "Valve",
+      "enum": [
+        "released",
+        "held"
+      ]
+    },
+    "logged_at": {
+      "type": "string",
+      "title": "Logged at",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "device_code",
+    "stage",
+    "logged_at"
+  ]
+}
