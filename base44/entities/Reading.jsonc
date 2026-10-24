@@ -1,1 +1,81 @@
-
+{
+  "name": "Reading",
+  "type": "object",
+  "properties": {
+    "device_code": {
+      "type": "string",
+      "title": "Device code"
+    },
+    "device_name": {
+      "type": "string",
+      "title": "Device name"
+    },
+    "village": {
+      "type": "string",
+      "title": "Village"
+    },
+    "tds": {
+      "type": "number",
+      "title": "TDS (ppm)"
+    },
+    "turbidity": {
+      "type": "number",
+      "title": "Turbidity (NTU)"
+    },
+    "temperature": {
+      "type": "number",
+      "title": "Temperature (\u00b0C)"
+    },
+    "level": {
+      "type": "number",
+      "title": "Water level (%)"
+    },
+    "recorded_at": {
+      "type": "string",
+      "title": "Recorded at",
+      "format": "date-time"
+    },
+    "decision": {
+      "type": "string",
+      "title": "Decision",
+      "enum": [
+        "safe",
+        "unsafe"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Overall status",
+      "enum": [
+        "safe",
+        "warn",
+        "danger"
+      ]
+    },
+    "valve": {
+      "type": "string",
+      "title": "Valve state",
+      "enum": [
+        "released",
+        "held"
+      ]
+    },
+    "cycle": {
+      "type": "number",
+      "title": "Re-filter cycle"
+    },
+    "source": {
+      "type": "string",
+      "title": "Source",
+      "enum": [
+        "sensor",
+        "simulator",
+        "manual"
+      ]
+    }
+  },
+  "required": [
+    "device_code",
+    "recorded_at"
+  ]
+}
