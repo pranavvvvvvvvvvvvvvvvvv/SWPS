@@ -1,1 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b8f8a" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>SWPS — Smart Water Purification &amp; Quality Monitoring System</title>
+    <meta
+      name="description"
+      content="SWPS is an IoT water purification and quality monitoring system for rural and mining-affected communities. It filters raw water, measures TDS, turbidity, temperature and level, and re-filters or alerts automatically."
+    />
+    <meta property="og:title" content="SWPS — Smart Water Purification & Quality Monitoring System" />
+    <meta
+      property="og:description"
+      content="Adaptive purification control for rural and mining-affected water sources — filtering, sensing and verifying water safety in one loop."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Inter:wght@300..700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      if ("serviceWorker" in navigator && location.protocol === "https:") {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/sw.js").catch(function () {});
+        });
+      }
+    </script>
+  </body>
+</html>
 
