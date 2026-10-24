@@ -1,1 +1,197 @@
+import { createContext, useContext, useEffect, useState } from "react";
 
+const DICT = {
+  en: {
+    "nav.home": "Home",
+    "nav.problem": "The problem",
+    "nav.how": "How it works",
+    "nav.prediction": "Prediction",
+    "nav.features": "Features",
+    "nav.project": "Project",
+    "nav.architecture": "System architecture",
+    "nav.technology": "Technology",
+    "nav.gallery": "Prototype & gallery",
+    "nav.future": "Advantages & future scope",
+    "nav.research": "Research",
+    "nav.team": "Team",
+    "nav.contact": "Contact",
+    "nav.dashboard": "Dashboard",
+    "nav.signIn": "Sign in",
+    "common.language": "Language",
+    "common.theme": "Toggle theme",
+    "common.openDashboard": "Open live dashboard",
+    "common.viewDashboard": "View dashboard",
+    "common.explore": "Explore the system",
+    "common.learnMore": "Learn more",
+    "common.developedBy": "Developed by Pranav",
+    "common.rights": "Smart Water Purification and Quality Monitoring System.",
+    "home.eyebrow": "IoT water safety project · Adaptive purification control",
+    "home.title.a": "Water that",
+    "home.title.b": "proves it is safe.",
+    "home.sub":
+      "SWPS filters raw water through sediment, carbon and RO stages, then measures TDS, turbidity, temperature and level in real time — re-filtering or alerting the moment a reading drifts past safe limits.",
+    "home.sample": "Sample snapshot",
+    "home.problem.eyebrow": "The gap we are closing",
+    "home.problem.title": "Purification and monitoring are still built as two separate things.",
+    "home.problem.sub":
+      "A filter cleans water. A sensor reports numbers. Neither one decides what to do next — so unsafe water still reaches the tap, and nobody in the village ever sees the proof.",
+    "home.how.eyebrow": "How it works",
+    "home.how.title": "Seven steps, one closed loop.",
+    "home.limits.title": "Safe limits the system checks against",
+    "home.cta.title": "See a unit decide for itself.",
+    "home.cta.sub": "The dashboard shows live readings, adaptive control decisions and maintenance priority across every village unit.",
+    "dash.overview": "Live overview",
+    "dash.control": "Adaptive control log",
+    "dash.alerts": "Alerts center",
+    "dash.map": "Map view",
+    "dash.maintenance": "Maintenance priority",
+    "dash.devices": "Devices",
+    "dash.thresholds": "Thresholds",
+    "dash.reports": "Reports",
+    "dash.manual": "Manual entry",
+    "dash.users": "Users & roles",
+    "dash.simulator": "Run device simulator",
+    "status.safe": "Safe",
+    "status.warn": "Watch",
+    "status.danger": "Unsafe",
+    "status.unknown": "No data",
+  },
+  te: {
+    "nav.home": "హోమ్",
+    "nav.problem": "సమస్య",
+    "nav.how": "ఇది ఎలా పనిచేస్తుంది",
+    "nav.prediction": "అంచనా",
+    "nav.features": "ఫీచర్లు",
+    "nav.project": "ప్రాజెక్ట్",
+    "nav.architecture": "వ్యవస్థ నిర్మాణం",
+    "nav.technology": "సాంకేతికత",
+    "nav.gallery": "ప్రోటోటైప్ & గ్యాలరీ",
+    "nav.future": "ప్రయోజనాలు & భవిష్యత్తు",
+    "nav.research": "పరిశోధన",
+    "nav.team": "బృందం",
+    "nav.contact": "సంప్రదించండి",
+    "nav.dashboard": "డాష్‌బోర్డ్",
+    "nav.signIn": "సైన్ ఇన్",
+    "common.language": "భాష",
+    "common.theme": "థీమ్ మార్చండి",
+    "common.openDashboard": "లైవ్ డాష్‌బోర్డ్ తెరవండి",
+    "common.viewDashboard": "డాష్‌బోర్డ్ చూడండి",
+    "common.explore": "వ్యవస్థను చూడండి",
+    "common.learnMore": "మరింత తెలుసుకోండి",
+    "common.developedBy": "రూపకల్పన: ప్రణవ్",
+    "common.rights": "స్మార్ట్ వాటర్ ప్యూరిఫికేషన్ అండ్ క్వాలిటీ మానిటరింగ్ సిస్టమ్.",
+    "home.eyebrow": "IoT నీటి భద్రత ప్రాజెక్ట్ · అడాప్టివ్ ప్యూరిఫికేషన్ కంట్రోల్",
+    "home.title.a": "సురక్షితమని",
+    "home.title.b": "నిరూపించే నీరు.",
+    "home.sub":
+      "SWPS ముడి నీటిని సెడిమెంట్, కార్బన్ మరియు RO దశల ద్వారా శుద్ధి చేసి, TDS, క్లౌడినెస్, ఉష్ణోగ్రత మరియు నీటి మట్టాన్ని నిజ సమయంలో కొలుస్తుంది — పరిమితి దాటిన వెంటనే మళ్లీ శుద్ధి చేస్తుంది లేదా హెచ్చరిస్తుంది.",
+    "home.sample": "నమూనా స్నాప్‌షాట్",
+    "home.problem.eyebrow": "మేము పూరించే అంతరం",
+    "home.problem.title": "శుద్ధి మరియు పర్యవేక్షణ ఇంకా వేర్వేరుగానే ఉన్నాయి.",
+    "home.problem.sub":
+      "ఫిల్టర్ నీటిని శుభ్రం చేస్తుంది. సెన్సార్ సంఖ్యలు చెబుతుంది. తర్వాత ఏమి చేయాలో ఏదీ నిర్ణయించదు — అందుకే అసురక్షిత నీరు ఇంకా కుళాయి చేరుతుంది.",
+    "home.how.eyebrow": "ఇది ఎలా పనిచేస్తుంది",
+    "home.how.title": "ఏడు దశలు, ఒకే చక్రం.",
+    "home.limits.title": "వ్యవస్థ తనిఖీ చేసే సురక్షిత పరిమితులు",
+    "home.cta.title": "ఒక యూనిట్ తనంతట తానే నిర్ణయించుకోవడం చూడండి.",
+    "home.cta.sub": "డాష్‌బోర్డ్ ప్రతి గ్రామ యూనిట్ యొక్క లైవ్ రీడింగ్‌లు, నిర్ణయాలు మరియు నిర్వహణ ప్రాధాన్యతను చూపిస్తుంది.",
+    "dash.overview": "లైవ్ అవలోకనం",
+    "dash.control": "అడాప్టివ్ కంట్రోల్ లాగ్",
+    "dash.alerts": "హెచ్చరికలు",
+    "dash.map": "మ్యాప్ వ్యూ",
+    "dash.maintenance": "నిర్వహణ ప్రాధాన్యత",
+    "dash.devices": "పరికరాలు",
+    "dash.thresholds": "పరిమితులు",
+    "dash.reports": "నివేదికలు",
+    "dash.manual": "మాన్యువల్ ఎంట్రీ",
+    "dash.users": "వినియోగదారులు & పాత్రలు",
+    "dash.simulator": "సిమ్యులేటర్ నడపండి",
+    "status.safe": "సురక్షితం",
+    "status.warn": "గమనించండి",
+    "status.danger": "అసురక్షితం",
+    "status.unknown": "డేటా లేదు",
+  },
+  hi: {
+    "nav.home": "होम",
+    "nav.problem": "समस्या",
+    "nav.how": "यह कैसे काम करता है",
+    "nav.prediction": "पूर्वानुमान",
+    "nav.features": "विशेषताएँ",
+    "nav.project": "प्रोजेक्ट",
+    "nav.architecture": "सिस्टम आर्किटेक्चर",
+    "nav.technology": "तकनीक",
+    "nav.gallery": "प्रोटोटाइप और गैलरी",
+    "nav.future": "लाभ और भविष्य",
+    "nav.research": "शोध",
+    "nav.team": "टीम",
+    "nav.contact": "संपर्क",
+    "nav.dashboard": "डैशबोर्ड",
+    "nav.signIn": "साइन इन",
+    "common.language": "भाषा",
+    "common.theme": "थीम बदलें",
+    "common.openDashboard": "लाइव डैशबोर्ड खोलें",
+    "common.viewDashboard": "डैशबोर्ड देखें",
+    "common.explore": "सिस्टम देखें",
+    "common.learnMore": "और जानें",
+    "common.developedBy": "निर्माता: प्रणव",
+    "common.rights": "स्मार्ट वाटर प्यूरीफिकेशन एंड क्वालिटी मॉनिटरिंग सिस्टम।",
+    "home.eyebrow": "IoT जल सुरक्षा प्रोजेक्ट · अडैप्टिव प्यूरीफिकेशन कंट्रोल",
+    "home.title.a": "पानी जो",
+    "home.title.b": "सुरक्षित साबित होता है।",
+    "home.sub":
+      "SWPS कच्चे पानी को सीडीमेंट, कार्बन और RO चरणों से शुद्ध करता है, फिर TDS, टर्बिडिटी, तापमान और जल स्तर को वास्तविक समय में मापता है — सीमा पार होते ही दोबारा फ़िल्टर करता है या चेतावनी देता है।",
+    "home.sample": "नमूना स्नैपशॉट",
+    "home.problem.eyebrow": "जो अंतर हम भर रहे हैं",
+    "home.problem.title": "शुद्धिकरण और निगरानी अब भी अलग-अलग बनाए जाते हैं।",
+    "home.problem.sub":
+      "फ़िल्टर पानी साफ़ करता है। सेंसर संख्याएँ बताता है। आगे क्या करना है, यह कोई तय नहीं करता — इसलिए असुरक्षित पानी अब भी नल तक पहुँचता है।",
+    "home.how.eyebrow": "यह कैसे काम करता है",
+    "home.how.title": "सात चरण, एक बंद चक्र।",
+    "home.limits.title": "सुरक्षित सीमाएँ जिनसे सिस्टम तुलना करता है",
+    "home.cta.title": "देखें एक यूनिट खुद कैसे निर्णय लेती है।",
+    "home.cta.sub": "डैशबोर्ड हर गाँव की यूनिट के लाइव रीडिंग, निर्णय और रखरखाव प्राथमिकता दिखाता है।",
+    "dash.overview": "लाइव अवलोकन",
+    "dash.control": "अडैप्टिव कंट्रोल लॉग",
+    "dash.alerts": "अलर्ट केंद्र",
+    "dash.map": "मैप व्यू",
+    "dash.maintenance": "रखरखाव प्राथमिकता",
+    "dash.devices": "डिवाइस",
+    "dash.thresholds": "सीमाएँ",
+    "dash.reports": "रिपोर्ट",
+    "dash.manual": "मैनुअल एंट्री",
+    "dash.users": "उपयोगकर्ता और भूमिकाएँ",
+    "dash.simulator": "डिवाइस सिम्युलेटर चलाएँ",
+    "status.safe": "सुरक्षित",
+    "status.warn": "ध्यान दें",
+    "status.danger": "असुरक्षित",
+    "status.unknown": "डेटा नहीं",
+  },
+};
+
+export const LANGUAGES = [
+  { code: "en", label: "English", short: "EN" },
+  { code: "te", label: "తెలుగు", short: "తె" },
+  { code: "hi", label: "हिन्दी", short: "हि" },
+];
+
+const LanguageContext = createContext({ lang: "en", setLang: () => {}, t: (k) => k });
+
+export function LanguageProvider({ children }) {
+  const [lang, setLang] = useState(() => {
+    const saved = typeof window !== "undefined" ? window.localStorage.getItem("swps-lang") : null;
+    return saved && DICT[saved] ? saved : "en";
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem("swps-lang", lang);
+    document.documentElement.lang = lang;
+  }, [lang]);
+
+  const t = (key, fallback) => DICT[lang]?.[key] ?? DICT.en[key] ?? fallback ?? key;
+
+  return <LanguageContext.Provider value={{ lang, setLang, t }}>{children}</LanguageContext.Provider>;
+}
+
+export function useI18n() {
+  return useContext(LanguageContext);
+}
