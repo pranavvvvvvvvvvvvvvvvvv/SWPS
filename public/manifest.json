@@ -1,1 +1,18 @@
+{
+  "name": "SWPS — Smart Water Purification & Quality Monitoring",
+  "short_name": "SWPS",
+  "description": "Purification and quality monitoring for rural and mining-affected water sources.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#04202a",
+  "theme_color": "#0b8f8a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
 
