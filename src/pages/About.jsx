@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Check, X, Droplets, Activity, Wrench, EyeOff } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
+import Reveal from "@/components/site/Reveal";
+import InteractiveCard from "@/components/site/InteractiveCard";
+import BeforeAfterSlider from "@/components/site/BeforeAfterSlider";
+import CountUp from "@/components/site/CountUp";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
 
 const GAPS = [
@@ -79,7 +83,7 @@ export default function About() {
       <Section>
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <SectionHeading
-            eyebrow={tr("The problem")}
+            eyebrow={tr("Problem")}
             title={tr("Unsafe water is rarely obvious.")}
             description={tr(
               "Mining runoff, deep-borewell salinity and monsoon turbidity change a source's quality without changing how it looks. A family drawing from a shared tap has no way to tell whether today's water is the same as last week's."
@@ -107,6 +111,40 @@ export default function About() {
         </div>
       </Section>
 
+      <Section waveTop="text-background">
+        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+          <Reveal>
+            <SectionHeading
+              eyebrow={tr("See the difference")}
+              title={tr("The same tap, before and after.")}
+              description={tr(
+                "Drag the handle to compare a contaminated sample with the outflow the unit releases."
+              )}
+            />
+            <dl className="mt-8 grid grid-cols-3 gap-4">
+              {[
+                { v: 500, suffix: " ppm", label: "TDS ceiling the valve enforces" },
+                { v: 30, suffix: " s", label: "Sampling interval per cycle" },
+                { v: 2, suffix: "", label: "Failed cycles before escalation" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <dt className="font-heading text-[26px] font-bold leading-none text-primary">
+                    <CountUp value={s.v} />
+                    <span className="text-[13px] font-medium">{s.suffix}</span>
+                  </dt>
+                  <dd className="mt-2 text-[11.5px] leading-relaxed text-muted-foreground">
+                    {tr(s.label)}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <BeforeAfterSlider />
+          </Reveal>
+        </div>
+      </Section>
+
       <Section className="border-y border-border bg-secondary/30">
         <SectionHeading
           eyebrow={tr("Where existing solutions fall short")}
@@ -119,13 +157,13 @@ export default function About() {
           {GAPS.map((g) => {
             const Icon = g.icon;
             return (
-              <div key={g.title} className="card-surface p-6">
+              <InteractiveCard key={g.title} className="card-surface p-6">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400">
                   <Icon className="h-5 w-5" />
                 </span>
                 <h3 className="mt-4 text-[15px] font-bold">{tr(g.title)}</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{tr(g.text)}</p>
-              </div>
+              </InteractiveCard>
             );
           })}
         </div>
@@ -169,7 +207,7 @@ export default function About() {
           />
           <div className="grid gap-4 sm:grid-cols-2">
             {PRINCIPLES.map((p, i) => (
-              <div key={p.t} className="rounded-2xl border border-border bg-card p-5">
+              <div key={p.t} className="card-surface rounded-2xl border border-border bg-card p-5">
                 <span className="font-mono text-[11px] text-primary">0{i + 1}</span>
                 <h3 className="mt-2 text-[13.5px] font-semibold leading-snug">{tr(p.t)}</h3>
                 <p className="mt-2 text-[12.5px] leading-relaxed text-muted-foreground">{tr(p.d)}</p>
