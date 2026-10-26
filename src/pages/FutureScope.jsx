@@ -1,5 +1,8 @@
 import { BatteryCharging, BrainCircuit, CheckCircle2, Coins, Cpu, Droplets, FlaskConical, LineChart, MapPinned, Network, Sun, Wrench } from "lucide-react";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
+import InteractiveCard from "@/components/site/InteractiveCard";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
 
 const ADVANTAGES = [
@@ -58,6 +61,13 @@ const ROADMAP = [
 
 export default function FutureScope() {
   const tr = useAutoTranslate();
+  const reduce = useReducedMotion();
+  const roadRef = useRef(null);
+  const { scrollYProgress: roadP } = useScroll({
+    target: roadRef,
+    offset: ["start 0.85", "end 0.5"],
+  });
+  const lineScale = useTransform(roadP, [0, 1], [0.004, 1]);
 
   return (
     <>
@@ -78,13 +88,13 @@ export default function FutureScope() {
           {ADVANTAGES.map((a) => {
             const Icon = a.icon;
             return (
-              <div key={a.t} className="card-surface p-5">
+              <InteractiveCard key={a.t} className="card-surface p-5">
                 <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
                   <Icon className="h-4 w-4" />
                 </span>
                 <h3 className="mt-3.5 text-[13.5px] font-bold">{tr(a.t)}</h3>
                 <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted-foreground">{tr(a.d)}</p>
-              </div>
+              </InteractiveCard>
             );
           })}
         </div>
@@ -102,7 +112,7 @@ export default function FutureScope() {
           {FUTURE.map((f) => {
             const Icon = f.icon;
             return (
-              <div key={f.t} className="group rounded-2xl border border-border bg-card p-5 transition hover:border-primary/30">
+              <InteractiveCard key={f.t} className="group rounded-2xl border border-border bg-card p-5 transition hover:border-primary/30">
                 <div className="flex items-center justify-between">
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <Icon className="h-4 w-4" />
@@ -113,7 +123,7 @@ export default function FutureScope() {
                 </div>
                 <h3 className="mt-3.5 text-[13.5px] font-bold leading-snug">{tr(f.t)}</h3>
                 <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted-foreground">{tr(f.d)}</p>
-              </div>
+              </InteractiveCard>
             );
           })}
         </div>
@@ -121,7 +131,15 @@ export default function FutureScope() {
 
       <Section>
         <SectionHeading eyebrow={tr("Roadmap")} title={tr("Where the project goes next.")} />
-        <div className="mt-9 grid gap-4 md:grid-cols-3">
+        <div ref={roadRef} className="relative mt-9">
+          {!reduce && (
+            <motion.div
+              aria-hidden
+              className="absolute -top-2 left-0 right-0 h-0.5 origin-left rounded-full bg-gradient-to-r from-primary via-sky-400 to-primary"
+              style={{ scaleX: lineScale }}
+            />
+          )}
+          <div className="grid gap-4 md:grid-cols-3">
           {ROADMAP.map((r, i) => (
             <div key={r.phase} className="relative rounded-2xl border border-border bg-card p-6">
               <span className="absolute right-5 top-5 font-mono text-[11px] text-muted-foreground/50">
@@ -139,6 +157,7 @@ export default function FutureScope() {
               </ul>
             </div>
           ))}
+          </div>
         </div>
       </Section>
     </>
