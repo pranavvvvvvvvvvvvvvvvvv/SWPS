@@ -1,12 +1,14 @@
-import { ArrowRight, ArrowDown, Cloud, Cpu, Droplets, Filter, Gauge, MonitorSmartphone, Radio, ShieldCheck, Waves } from "lucide-react";
+import { ArrowRight, Cloud, Cpu, Droplets, Filter, Gauge, MonitorSmartphone, Radio, ShieldCheck, Waves } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
+import DataFlow from "@/components/site/DataFlow";
+import InteractiveCard from "@/components/site/InteractiveCard";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
 
 const LAYERS = [
   {
     label: "1 · Water path",
-    tone: "from-cyan-500/10 to-teal-500/5",
+    tone: "from-sky-500/10 to-blue-500/5",
     items: [
       { name: "Raw intake", sub: "tank / borewell", icon: Droplets },
       { name: "Sediment filter", sub: "5 µm", icon: Filter },
@@ -117,11 +119,7 @@ export default function Architecture() {
                   })}
                 </div>
               </div>
-              {li < LAYERS.length - 1 && (
-                <div className="flex justify-center py-2">
-                  <ArrowDown className="h-4 w-4 text-border" />
-                </div>
-              )}
+              {li < LAYERS.length - 1 && <DataFlow />}
             </div>
           ))}
         </div>
@@ -177,15 +175,15 @@ export default function Architecture() {
               d: "Admin, health officer, local operator and public viewer each receive only the endpoints and actions their role allows.",
             },
           ].map((c) => (
-            <div key={c.t} className="card-surface p-6">
+            <InteractiveCard key={c.t} className="card-surface p-6">
               <h3 className="text-[14px] font-bold">{tr(c.t)}</h3>
               <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{tr(c.d)}</p>
-            </div>
+            </InteractiveCard>
           ))}
         </div>
 
-        <div className="mt-10 overflow-hidden rounded-2xl border border-border bg-[#04222c] p-6 text-cyan-50/80">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-cyan-200/60">{tr("Uplink payload")}</p>
+        <div className="mt-10 overflow-hidden rounded-2xl border border-border bg-[#04213a] p-6 text-sky-50/80">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-sky-200/60">{tr("Uplink payload")}</p>
           <pre className="mt-3 overflow-x-auto font-mono text-[11.5px] leading-relaxed">
 {`POST /api/readings
 {
