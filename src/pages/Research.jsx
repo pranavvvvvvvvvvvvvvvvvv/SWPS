@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { jsPDF } from "jspdf";
+import { motion } from "framer-motion";
 import { Download, FileText, Loader2, Quote } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
+import EmailLink from "@/components/site/EmailLink";
 
 const ABSTRACT = `Access to safe drinking water remains uneven in rural and mining-affected regions, where source quality varies with rainfall, recharge and industrial runoff. Existing interventions typically address purification and quality monitoring as separate systems: purifiers remove contaminants but produce no record of effectiveness, while IoT monitoring nodes report readings without acting on them. This project presents SWPS, a smart water purification and quality monitoring system that closes the loop between measurement and action. Raw water passes through sediment, granular activated carbon and reverse-osmosis stages into a sealed sensor chamber where total dissolved solids, turbidity, temperature and water level are measured by an ESP32 microcontroller. Each reading is compared against a per-device safe envelope derived from WHO drinking-water guidance. When a parameter exceeds its limit, the controller de-energises a normally-closed outlet valve, restarts the filtration cycle and escalates an alert to a health officer or local operator after repeated failures. Readings, decisions and cycle counts are synchronised to a cloud service and surfaced in a role-based dashboard with live status cards, trend charts, adaptive-control logs, a multi-site map, maintenance priority ranking and report exports. The prototype demonstrates that a low-cost, field-serviceable unit can enforce water safety autonomously while retaining an auditable record for health authorities.`;
 
@@ -87,6 +89,7 @@ export default function Research() {
       write("Smart Water Purification and Quality Monitoring System (SWPS)", { size: 17, style: "bold", gap: 10 });
       write("Adaptive purification control for rural and mining-affected water sources", { size: 11.5, style: "italic", gap: 6, color: "#3c5a63" });
       write("Pranav — Developer, SWPS", { size: 10, gap: 2 });
+      write("chpranav559@gmail.com", { size: 10, gap: 2, color: "#3c5a63" });
       write("Project guide: Dr. Amrita Saha", { size: 10, gap: 16 });
       write("Abstract", { size: 13, style: "bold", gap: 8 });
       write(ABSTRACT, { size: 10.5, gap: 14 });
@@ -188,6 +191,12 @@ export default function Research() {
                 <dt className="text-muted-foreground">{tr("Year")}</dt>
                 <dd className="font-medium">2026</dd>
               </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-muted-foreground">{tr("Contact")}</dt>
+                <dd className="text-right">
+                  <EmailLink className="text-[11.5px]" />
+                </dd>
+              </div>
             </dl>
           </aside>
         </div>
@@ -248,10 +257,17 @@ export default function Research() {
             <SectionHeading eyebrow={tr("References")} title={tr("Sources cited.")} />
             <ol className="mt-6 space-y-3">
               {REFERENCES.map((ref, i) => (
-                <li key={ref} className="flex gap-3 text-[12.5px] leading-relaxed text-muted-foreground">
+                <motion.li
+                  key={ref}
+                  className="flex gap-3 text-[12.5px] leading-relaxed text-muted-foreground"
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.5, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                >
                   <span className="font-mono text-[11px] text-primary">[{i + 1}]</span>
                   {ref}
-                </li>
+                </motion.li>
               ))}
             </ol>
             <p className="mt-5 rounded-xl border border-border bg-secondary/50 p-4 text-[11.5px] leading-relaxed text-muted-foreground">
