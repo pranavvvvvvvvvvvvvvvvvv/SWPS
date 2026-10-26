@@ -1,0 +1,32 @@
+{
+  "name": "Translation",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "title": "Cache key"
+    },
+    "lang": {
+      "type": "string",
+      "title": "Language",
+      "enum": [
+        "te",
+        "hi"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "title": "English source"
+    },
+    "text": {
+      "type": "string",
+      "title": "Translated text"
+    }
+  },
+  "required": [
+    "key",
+    "lang",
+    "source",
+    "text"
+  ]
+}
