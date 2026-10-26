@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Clock, LineChart, ShieldCheck } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
+import InteractiveCard from "@/components/site/InteractiveCard";
 import ForecastPreview from "@/components/site/ForecastPreview";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
 
@@ -69,13 +70,13 @@ export default function Prediction() {
           {METHOD.map((step) => {
             const Icon = step.icon;
             return (
-              <div key={step.title} className="card-surface p-5">
+              <InteractiveCard key={step.title} className="card-surface p-5">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-background text-primary">
                   <Icon className="h-4.5 w-4.5" />
                 </span>
                 <h3 className="mt-4 text-[14.5px] font-bold leading-snug">{tr(step.title)}</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{tr(step.text)}</p>
-              </div>
+              </InteractiveCard>
             );
           })}
         </div>
