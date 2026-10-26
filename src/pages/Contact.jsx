@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { Check, Loader2, Mail, MapPin, MessageSquare, Send, UserRound } from "lucide-react";
+import { Check, Loader2, MapPin, MessageSquare, Send, UserRound } from "lucide-react";
 import { PageHero, Section } from "@/components/site/Section";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
+import EmailLink from "@/components/site/EmailLink";
 
 const ROLES = ["Village / community representative", "Health officer", "Local operator", "Student / researcher", "Other"];
 
@@ -24,13 +25,23 @@ export default function Contact() {
     setStatus("sending");
     setError("");
     try {
-      await base44.entities.ContactMessage.create({
+      const payload = {
         name: form.name.trim(),
         email: form.email.trim(),
         subject: form.subject.trim() || "General enquiry",
         message: form.message.trim(),
-        source: "contact-page",
-      });
+        source: "contact-page"
+      };
+      await base44.entities.ContactMessage.create(payload);
+      // notify the developer by email; never blocks the form's own flow
+      base44.functions.
+      invoke("notifyContactMessage", {
+        name: payload.name,
+        email: payload.email,
+        subject: payload.subject,
+        message: payload.message
+      }).
+      catch(() => {});
       setStatus("sent");
       setForm(EMPTY);
     } catch (err) {
@@ -46,8 +57,8 @@ export default function Contact() {
         title={tr("Ask about the system, the deployment or the research.")}
         description={tr(
           "Send a message for project queries, field deployment questions or collaboration. Messages reach the developer directly."
-        )}
-      />
+        )} />
+      
 
       <Section>
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
@@ -58,112 +69,118 @@ export default function Contact() {
               <h2 className="text-[16px] font-bold">{tr("Send a message")}</h2>
             </div>
 
-            {status === "sent" ? (
-              <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50/70 p-5 dark:border-emerald-500/25 dark:bg-emerald-500/10">
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-primary/15 bg-secondary/50 px-4 py-3">
+              <span className="text-[13px] font-semibold">{tr("Email us directly")}</span>
+              <EmailLink />
+            </div>
+
+            {status === "sent" ?
+            <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50/70 p-5 dark:border-emerald-500/25 dark:bg-emerald-500/10">
                 <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
                   <Check className="h-4 w-4" />
                   <p className="text-[13.5px] font-semibold">{tr("Message received")}</p>
                 </div>
                 <p className="mt-2 text-[12.5px] leading-relaxed text-emerald-800/80 dark:text-emerald-200/80">
                   {tr(
-                    "Thanks — your message has been logged. The developer will respond to the email address you provided."
-                  )}
+                  "Thanks — your message has been logged. The developer will respond to the email address you provided."
+                )}
                 </p>
                 <button
-                  type="button"
-                  onClick={() => setStatus("idle")}
-                  className="mt-4 text-[12.5px] font-semibold text-emerald-800 underline-offset-4 hover:underline dark:text-emerald-200"
-                >
+                type="button"
+                onClick={() => setStatus("idle")}
+                className="mt-4 text-[12.5px] font-semibold text-emerald-800 underline-offset-4 hover:underline dark:text-emerald-200">
+                
                   {tr("Send another message")}
                 </button>
-              </div>
-            ) : (
-              <form onSubmit={submit} className="mt-6 space-y-4">
+              </div> :
+
+            <form onSubmit={submit} className="mt-6 space-y-4">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="name" className="text-[12px]">{tr("Full name")}</Label>
                     <Input
-                      id="name"
-                      value={form.name}
-                      onChange={update("name")}
-                      required
-                      placeholder={tr("Your name")}
-                      className="mt-1.5"
-                    />
+                    id="name"
+                    value={form.name}
+                    onChange={update("name")}
+                    required
+                    placeholder={tr("Your name")}
+                    className="mt-1.5" />
+                  
                   </div>
                   <div>
                     <Label htmlFor="email" className="text-[12px]">{tr("Email address")}</Label>
                     <Input
-                      id="email"
-                      type="email"
-                      value={form.email}
-                      onChange={update("email")}
-                      required
-                      placeholder="you@example.com"
-                      className="mt-1.5"
-                    />
+                    id="email"
+                    type="email"
+                    value={form.email}
+                    onChange={update("email")}
+                    required
+                    placeholder="you@example.com"
+                    className="mt-1.5" />
+                  
                   </div>
                 </div>
 
                 <div>
                   <Label htmlFor="subject" className="text-[12px]">{tr("What is this about?")}</Label>
                   <select
-                    id="subject"
-                    value={form.subject}
-                    onChange={update("subject")}
-                    className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  >
+                  id="subject"
+                  value={form.subject}
+                  onChange={update("subject")}
+                  className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                  
                     <option value="">{tr("General enquiry")}</option>
-                    {ROLES.map((r) => (
-                      <option key={r} value={r}>
+                    {ROLES.map((r) =>
+                  <option key={r} value={r}>
                         {tr(r)}
                       </option>
-                    ))}
+                  )}
                   </select>
                 </div>
 
                 <div>
                   <Label htmlFor="message" className="text-[12px]">{tr("Message")}</Label>
                   <Textarea
-                    id="message"
-                    value={form.message}
-                    onChange={update("message")}
-                    required
-                    rows={5}
-                    placeholder={tr("Tell us what you need to know")}
-                    className="mt-1.5 resize-none"
-                  />
+                  id="message"
+                  value={form.message}
+                  onChange={update("message")}
+                  required
+                  rows={5}
+                  placeholder={tr("Tell us what you need to know")}
+                  className="mt-1.5 resize-none" />
+                
                 </div>
 
-                {status === "error" && (
-                  <p className="rounded-lg bg-rose-50 px-3 py-2 text-[12px] text-rose-700 dark:bg-rose-500/10 dark:text-rose-300">
+                {status === "error" &&
+              <p className="rounded-lg bg-rose-50 px-3 py-2 text-[12px] text-rose-700 dark:bg-rose-500/10 dark:text-rose-300">
                     {error}
                   </p>
-                )}
+              }
 
                 <button
-                  type="submit"
-                  disabled={status === "sending"}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-60 sm:w-auto"
-                >
-                  {status === "sending" ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Send className="h-4 w-4" />
-                  )}
+                type="submit"
+                disabled={status === "sending"}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-60 sm:w-auto">
+                
+                  {status === "sending" ?
+                <Loader2 className="h-4 w-4 animate-spin" /> :
+
+                <Send className="h-4 w-4" />
+                }
                   {status === "sending" ? tr("Sending…") : tr("Send message")}
                 </button>
               </form>
-            )}
+            }
           </div>
 
           {/* developer + institution */}
           <div className="space-y-5">
-            <div id="developer" className="card-surface relative overflow-hidden p-6 sm:p-7">
+            <div id="developer" className="card-surface group relative overflow-hidden p-6 sm:p-7">
               <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-primary/10 blur-3xl" />
               <p className="eyebrow relative">{tr("Developed by")}</p>
               <div className="relative mt-4 flex items-center gap-4">
-                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-cyan-600 text-lg font-bold text-white shadow-sm">
+                <span className="relative flex h-14 w-14 animate-drift items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-sky-500 text-lg font-bold text-white shadow-sm">
+                  <span className="logo-ripple absolute inset-0 rounded-2xl border border-primary/50" />
                   P
                 </span>
                 <div>
@@ -184,8 +201,8 @@ export default function Contact() {
                   Pranav · {tr("Developer")}
                 </p>
                 <p className="flex items-center gap-2 text-muted-foreground">
-                  <Mail className="h-3.5 w-3.5 text-primary" />
-                  {tr("Use the contact form for a reply by email")}
+                  
+                  <EmailLink className="text-[12.5px] text-muted-foreground" />
                 </p>
                 <p className="flex items-center gap-2 text-muted-foreground">
                   <MapPin className="h-3.5 w-3.5 text-primary" />
@@ -215,6 +232,6 @@ export default function Contact() {
           </div>
         </div>
       </Section>
-    </>
-  );
+    </>);
+
 }
