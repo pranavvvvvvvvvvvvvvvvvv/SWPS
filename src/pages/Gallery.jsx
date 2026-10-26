@@ -1,10 +1,10 @@
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Camera, Expand, Play, Ruler, X } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
 import { Image } from "@/components/ui/image";
 import { IMAGES } from "@/lib/media";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
-import { cn } from "@/lib/utils";
 
 const SPECS = [
   { k: "Filtration stages", v: "Sediment (5 µm) → GAC carbon → RO" },
@@ -42,9 +42,9 @@ export default function Gallery() {
           <Image
             src={IMAGES.unit}
             alt="SWPS purification prototype in a village courtyard"
-            className="aspect-[16/9] w-full"
+            className="aspect-[16/9] w-full transition-transform duration-1000 group-hover:scale-[1.03]"
           />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#04222c]/85 via-transparent to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#04213a]/85 via-transparent to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur">
               <Camera className="h-3 w-3" /> {tr("Prototype · v1")}
@@ -64,7 +64,7 @@ export default function Gallery() {
               className="group relative overflow-hidden rounded-2xl border border-border text-left"
             >
               <Image src={shot.src} alt={shot.title} className="aspect-[4/3] w-full transition duration-500 group-hover:scale-[1.03]" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#04222c]/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#04213a]/80 via-transparent to-transparent" />
               <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4">
                 <div>
                   <p className="text-[12.5px] font-semibold text-white">{tr(shot.title)}</p>
@@ -87,13 +87,13 @@ export default function Gallery() {
                 "A short walkthrough of the working prototype: filtration, sensor sampling and the automatic hold-and-re-filter response."
               )}
             />
-            <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-[#04222c]">
+            <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-[#04213a]">
               <div className="flex aspect-video items-center justify-center">
                 <div className="flex flex-col items-center gap-3 text-center">
                   <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white">
                     <Play className="h-5 w-5" />
                   </span>
-                  <p className="max-w-xs px-6 text-[12.5px] leading-relaxed text-cyan-100/60">
+                  <p className="max-w-xs px-6 text-[12.5px] leading-relaxed text-sky-100/60">
                     {tr(
                       "Demo video is being prepared for the final review. Photographs above are from the current prototype build."
                     )}
@@ -123,8 +123,13 @@ export default function Gallery() {
         </div>
       </Section>
 
+      <AnimatePresence>
       {lightbox && (
-        <div
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
           className="fixed inset-0 z-[70] flex items-center justify-center bg-black/85 p-4"
           onClick={() => setLightbox(null)}
           role="dialog"
@@ -139,12 +144,20 @@ export default function Gallery() {
           >
             <X className="h-4 w-4" />
           </button>
-          <figure className="max-w-4xl" onClick={(e) => e.stopPropagation()}>
+          <motion.figure
+            initial={{ scale: 0.94, y: 12 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.96, opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-4xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <img src={lightbox.src} alt={lightbox.title} className="max-h-[75vh] w-full rounded-xl object-contain" />
             <figcaption className="mt-3 text-center text-[12.5px] text-white/70">{tr(lightbox.caption)}</figcaption>
-          </figure>
-        </div>
+          </motion.figure>
+        </motion.div>
       )}
+      </AnimatePresence>
     </>
   );
 }
