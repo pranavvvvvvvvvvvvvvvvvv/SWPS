@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { motion, useReducedMotion } from "framer-motion";
 import { ChevronDown, Droplets, Languages, Menu, Moon, Sun, LayoutDashboard } from "lucide-react";
 import { cn } from "@/lib/utils";
+import RippleLink from "@/components/site/RippleLink";
 import { useI18n, LANGUAGES } from "@/lib/LanguageContext";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
 import { useTheme } from "@/lib/ThemeContext";
@@ -48,7 +50,14 @@ export function LanguageMenu({ compact = false }) {
           )}
         >
           <Languages className="h-3.5 w-3.5" />
-          {compact ? current.short : current.label}
+          {compact ? (
+            current.short
+          ) : (
+            <>
+              <span className="xl:hidden">{current.short}</span>
+              <span className="hidden xl:inline">{current.label}</span>
+            </>
+          )}
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40">
@@ -88,6 +97,7 @@ export function ThemeToggle() {
 export default function SiteHeader() {
   const { t } = useI18n();
   const tr = useAutoTranslate();
+  const reduce = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
@@ -106,24 +116,30 @@ export default function SiteHeader() {
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
         scrolled
-          ? "border-b border-border/70 bg-background/85 backdrop-blur-xl shadow-[0_1px_12px_-8px_rgba(4,32,40,0.4)]"
+          ? "border-b border-border/70 bg-background/85 backdrop-blur-xl shadow-[0_1px_12px_-8px_rgba(4,32,58,0.4)]"
           : "border-b border-transparent bg-background/60 backdrop-blur-md"
       )}
     >
-      <div className="container-page flex h-16 items-center justify-between gap-3">
-        <Link to="/" className="group flex items-center gap-2.5">
-          <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-cyan-600 text-white shadow-sm">
+      <div className="container-page flex h-16 items-center gap-3">
+        <Link to="/" className="group flex shrink-0 items-center gap-2.5">
+          <motion.span
+            className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-sky-500 text-white shadow-sm"
+            animate={reduce ? undefined : { y: [0, -2, 0] }}
+            transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <span className="logo-ripple absolute inset-0 rounded-xl border border-primary/50" />
             <Droplets className="h-4.5 w-4.5" strokeWidth={2.2} />
-          </span>
+          </motion.span>
           <span className="leading-none">
             <span className="block font-heading text-[15px] font-extrabold tracking-tight">SWPS</span>
-            <span className="mt-0.5 block text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+            <span className="mt-0.5 hidden text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground xl:block">
               {tr("Clean water, verified")}
             </span>
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+        {/* Desktop nav: visible from 1024px up, one line, centred */}
+        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 lg:flex" aria-label="Main">
           {PRIMARY.map((item) => (
             <NavLink
               key={item.to}
@@ -131,23 +147,36 @@ export default function SiteHeader() {
               end={item.to === "/"}
               className={({ isActive }) =>
                 cn(
-                  "rounded-full px-3 py-2 text-[13px] font-medium transition-colors",
+                  "relative whitespace-nowrap rounded-full px-2 py-2 text-[12.5px] font-medium transition-colors xl:px-3 xl:text-[13px]",
                   isActive
-                    ? "bg-secondary text-primary"
+                    ? cn("text-primary", reduce && "bg-secondary")
                     : "text-foreground/70 hover:bg-secondary/70 hover:text-foreground"
                 )
               }
             >
-              {t(item.key)}
+              {({ isActive }) => (
+                <>
+                  {isActive && !reduce && (
+                    <motion.span
+                      layoutId="site-nav-pill"
+                      className="absolute inset-0 rounded-full bg-secondary"
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    />
+                  )}
+                  <span className="relative whitespace-nowrap">
+                    {t(`${item.key}.short`, t(item.key))}
+                  </span>
+                </>
+              )}
             </NavLink>
           ))}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
-                className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-[13px] font-medium text-foreground/70 transition-colors hover:bg-secondary/70 hover:text-foreground"
+                className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2 py-2 text-[12.5px] font-medium text-foreground/70 transition-colors hover:bg-secondary/70 hover:text-foreground xl:px-3 xl:text-[13px]"
               >
-                {t("nav.project")}
+                {t("nav.project.short", t("nav.project"))}
                 <ChevronDown className="h-3.5 w-3.5 opacity-60" />
               </button>
             </DropdownMenuTrigger>
@@ -163,18 +192,19 @@ export default function SiteHeader() {
           </DropdownMenu>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <div className="hidden items-center gap-2 sm:flex">
             <LanguageMenu />
             <ThemeToggle />
           </div>
-          <Link
+          <RippleLink
             to="/dashboard"
-            className="hidden items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[13px] font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 sm:inline-flex"
+            rippleClass="bg-white/25"
+            className="hidden items-center gap-1.5 whitespace-nowrap rounded-full bg-primary px-4 py-2 text-[13px] font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 sm:inline-flex"
           >
             <LayoutDashboard className="h-3.5 w-3.5" />
             {t("nav.dashboard")}
-          </Link>
+          </RippleLink>
 
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
