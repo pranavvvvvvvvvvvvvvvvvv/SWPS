@@ -1,5 +1,6 @@
 import { Cpu, Droplet, Gauge, Radio, Server, Smartphone, Thermometer, Waves, Wifi } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
+import InteractiveCard from "@/components/site/InteractiveCard";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
 
 const HARDWARE = [
@@ -107,10 +108,10 @@ export default function Technology() {
           {HARDWARE.map((h) => {
             const Icon = h.icon;
             return (
-              <div key={h.name} className="card-surface p-5">
+              <InteractiveCard key={h.name} className="card-surface p-5">
                 <div className="flex items-start justify-between">
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <Icon className="h-4 w-4" />
+                    <Icon className="icon-pulse h-4 w-4" />
                   </span>
                   <span className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                     {tr(h.role)}
@@ -127,7 +128,7 @@ export default function Technology() {
                 <p className="mt-3 border-t border-border/70 pt-3 text-[12px] leading-relaxed text-muted-foreground">
                   {tr(h.note)}
                 </p>
-              </div>
+              </InteractiveCard>
             );
           })}
         </div>
@@ -175,10 +176,10 @@ export default function Technology() {
           {SOFTWARE.map((s) => {
             const Icon = s.icon;
             return (
-              <div key={s.name} className="rounded-2xl border border-border bg-card p-5">
+              <InteractiveCard key={s.name} className="rounded-2xl border border-border bg-card p-5">
                 <div className="flex items-center gap-3">
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary text-primary">
-                    <Icon className="h-4 w-4" />
+                    <Icon className="icon-pulse h-4 w-4" />
                   </span>
                   <div>
                     <h3 className="text-[13.5px] font-bold leading-tight">{s.name}</h3>
@@ -193,7 +194,7 @@ export default function Technology() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </InteractiveCard>
             );
           })}
         </div>
