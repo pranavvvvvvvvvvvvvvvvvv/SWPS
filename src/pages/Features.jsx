@@ -1,23 +1,21 @@
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
-  BellRing,
   CalendarClock,
   CloudOff,
   FileDown,
-  Filter,
   Globe2,
   History,
   Map,
-  Radio,
   RefreshCw,
   Scale,
   ShieldCheck,
   Smartphone,
   Siren,
-  Wifi,
 } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
+import Reveal from "@/components/site/Reveal";
+import InteractiveCard from "@/components/site/InteractiveCard";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
 
 const HERO_FEATURES = [
@@ -93,8 +91,8 @@ export default function Features() {
           {HERO_FEATURES.map((f, i) => {
             const Icon = f.icon;
             return (
-              <div
-                key={f.title}
+              <Reveal key={f.title} delay={i * 0.08}>
+              <InteractiveCard
                 className="card-surface grid gap-6 p-6 sm:p-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center"
               >
                 <div>
@@ -115,7 +113,8 @@ export default function Features() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </InteractiveCard>
+              </Reveal>
             );
           })}
         </div>
@@ -182,11 +181,11 @@ export default function Features() {
           {SUPPORTING.map((s) => {
             const Icon = s.icon;
             return (
-              <div key={s.t} className="rounded-2xl border border-border bg-card p-5">
-                <Icon className="h-4.5 w-4.5 text-primary" />
+              <InteractiveCard key={s.t} className="rounded-2xl border border-border bg-card p-5">
+                <Icon className="icon-bob h-4.5 w-4.5 text-primary" />
                 <h3 className="mt-3 text-[13px] font-semibold">{tr(s.t)}</h3>
                 <p className="mt-1.5 text-[12px] leading-relaxed text-muted-foreground">{tr(s.d)}</p>
-              </div>
+              </InteractiveCard>
             );
           })}
         </div>
