@@ -1,15 +1,13 @@
 import { useMemo, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Activity,
-  AlertTriangle,
-  Atom,
   Bell,
   ChevronRight,
   ClipboardList,
   Cpu,
   Droplets,
-  Gauge,
   LayoutDashboard,
   LogOut,
   Map as MapIcon,
@@ -30,6 +28,8 @@ import { useTheme } from "@/lib/ThemeContext";
 import { useI18n } from "@/lib/LanguageContext";
 import { LanguageMenu } from "@/components/site/SiteHeader";
 import SiteFooter from "@/components/site/SiteFooter";
+import InteractiveBackdrop from "@/components/site/InteractiveBackdrop";
+import ScrollProgress from "@/components/site/ScrollProgress";
 import ProjectAssistant from "@/components/chat/ProjectAssistant";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
@@ -65,6 +65,7 @@ export default function DashboardLayout() {
   const location = useLocation();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
+  const reduce = useReducedMotion();
   const [simulating, setSimulating] = useState(false);
   const [simNote, setSimNote] = useState("");
 
@@ -133,11 +134,13 @@ export default function DashboardLayout() {
   );
 
   return (
-    <div className="flex min-h-screen bg-secondary/30">
+    <>
+      <InteractiveBackdrop variant="subtle" />
+      <div className="relative z-10 flex min-h-screen bg-secondary/30">
       {/* desktop sidebar */}
       <aside className="sticky top-0 hidden h-screen w-[250px] shrink-0 flex-col border-r border-border bg-card lg:flex">
         <Link to="/" className="flex h-16 items-center gap-2.5 border-b border-border px-5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-cyan-600 text-white">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-sky-500 text-white">
             <Droplets className="h-4 w-4" strokeWidth={2.2} />
           </span>
           <span className="leading-none">
@@ -249,15 +252,23 @@ export default function DashboardLayout() {
           )}
         </header>
 
+        <ScrollProgress />
         <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 sm:py-8">
-          <div className="mx-auto w-full max-w-[1180px]">
+          <motion.div
+            key={location.pathname}
+            initial={reduce ? false : { opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-auto w-full max-w-[1180px]"
+          >
             <Outlet />
-          </div>
+          </motion.div>
         </main>
 
         <SiteFooter />
       </div>
       <ProjectAssistant />
-    </div>
+      </div>
+    </>
   );
 }
