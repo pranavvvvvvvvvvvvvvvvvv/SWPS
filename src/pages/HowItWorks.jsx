@@ -1,7 +1,8 @@
+import { useRef } from "react";
 import { Link } from "react-router-dom";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight,
-  ArrowDown,
   BellRing,
   CheckCircle2,
   Cpu,
@@ -17,7 +18,6 @@ import { PageHero, Section, SectionHeading } from "@/components/site/Section";
 import { IMAGES } from "@/lib/media";
 import { Image } from "@/components/ui/image";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
-import { cn } from "@/lib/utils";
 
 const STEPS = [
   {
@@ -66,6 +66,17 @@ const STEPS = [
 
 export default function HowItWorks() {
   const tr = useAutoTranslate();
+  const reduce = useReducedMotion();
+  const stepsRef = useRef(null);
+  const { scrollYProgress: stepsP } = useScroll({
+    target: stepsRef,
+    offset: ["start 0.78", "end 0.55"],
+  });
+  const railScale = useTransform(stepsP, [0, 1], [0.004, 1]);
+  const dropletTop = useTransform(stepsP, (v) =>
+    `calc(${Math.min(Math.max(v, 0), 1) * 96}% - 7px)`
+  );
+  const dropletColor = useTransform(stepsP, [0, 0.55, 1], ["#8a6a3c", "#7dd3fc", "#0284c7"]);
 
   return (
     <>
@@ -112,7 +123,23 @@ export default function HowItWorks() {
               eyebrow={tr("Step by step")}
               title={tr("The control loop, in order.")}
             />
-            <ol className="mt-9 space-y-0">
+            <div ref={stepsRef} className="relative mt-9">
+              {!reduce && (
+                <>
+                  <div aria-hidden className="pointer-events-none absolute inset-y-0 left-[19px] w-0.5">
+                    <motion.div
+                      className="h-full w-full origin-top rounded-full bg-gradient-to-b from-amber-700/30 via-sky-400/50 to-sky-400/70"
+                      style={{ scaleY: railScale }}
+                    />
+                  </div>
+                  <motion.span
+                    aria-hidden
+                    className="pointer-events-none absolute left-[19px] z-10 h-3.5 w-3.5 -translate-x-1/2 rounded-full border-2 border-background shadow-md"
+                    style={{ top: dropletTop, backgroundColor: dropletColor }}
+                  />
+                </>
+              )}
+              <ol className="space-y-0">
               {STEPS.map((step, i) => {
                 const Icon = step.icon;
                 return (
@@ -138,7 +165,8 @@ export default function HowItWorks() {
                   </li>
                 );
               })}
-            </ol>
+              </ol>
+            </div>
           </div>
 
           <div className="space-y-5 lg:sticky lg:top-24 lg:self-start">
