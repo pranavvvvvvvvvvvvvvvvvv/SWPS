@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const DICT = {
   en: {
     "nav.home": "Home",
-    "nav.problem": "The problem",
+    "nav.problem": "Problem",
     "nav.how": "How it works",
     "nav.prediction": "Prediction",
     "nav.features": "Features",
@@ -60,6 +60,7 @@ const DICT = {
     "nav.home": "హోమ్",
     "nav.problem": "సమస్య",
     "nav.how": "ఇది ఎలా పనిచేస్తుంది",
+    "nav.how.short": "ఎలా పనిచేస్తుంది",
     "nav.prediction": "అంచనా",
     "nav.features": "ఫీచర్లు",
     "nav.project": "ప్రాజెక్ట్",
@@ -115,6 +116,7 @@ const DICT = {
     "nav.home": "होम",
     "nav.problem": "समस्या",
     "nav.how": "यह कैसे काम करता है",
+    "nav.how.short": "कैसे काम करता है",
     "nav.prediction": "पूर्वानुमान",
     "nav.features": "विशेषताएँ",
     "nav.project": "प्रोजेक्ट",
