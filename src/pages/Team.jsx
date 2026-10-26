@@ -1,6 +1,8 @@
 import { Award, BookOpen, Cpu, GraduationCap, HeartHandshake, MapPin, Server, TestTube2, UserRound } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
+import InteractiveCard from "@/components/site/InteractiveCard";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
+import EmailLink from "@/components/site/EmailLink";
 
 const ROLES = [
   { icon: Cpu, role: "Firmware & sensing", detail: "ESP32 firmware, probe calibration, adaptive control logic." },
@@ -25,12 +27,13 @@ export default function Team() {
       <Section>
         <div className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
           {/* Developer card */}
-          <div id="developer" className="card-surface relative overflow-hidden p-7 sm:p-9">
+          <div id="developer" className="card-surface group relative overflow-hidden p-7 sm:p-9">
             <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
             <div className="relative">
               <p className="eyebrow">{tr("Developed by")}</p>
               <div className="mt-5 flex items-center gap-4">
-                <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-cyan-600 text-xl font-bold text-white shadow-sm">
+                <span className="relative flex h-16 w-16 animate-drift items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-sky-500 text-xl font-bold text-white shadow-sm">
+                  <span className="logo-ripple absolute inset-0 rounded-2xl border border-primary/50" />
                   P
                 </span>
                 <div>
@@ -56,6 +59,9 @@ export default function Team() {
                     {tag}
                   </span>
                 ))}
+              </div>
+              <div className="mt-6 border-t border-border pt-4">
+                <EmailLink className="text-[13px]" />
               </div>
             </div>
           </div>
@@ -97,7 +103,7 @@ export default function Team() {
           {ROLES.map((r) => {
             const Icon = r.icon;
             return (
-              <div key={r.role} className="rounded-2xl border border-border bg-card p-5">
+              <InteractiveCard key={r.role} className="rounded-2xl border border-border bg-card p-5">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                   <Icon className="h-4.5 w-4.5" />
                 </span>
@@ -107,7 +113,7 @@ export default function Team() {
                   <UserRound className="h-3 w-3" />
                   {tr("Team member")}
                 </div>
-              </div>
+              </InteractiveCard>
             );
           })}
         </div>
