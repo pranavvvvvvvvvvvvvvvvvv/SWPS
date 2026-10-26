@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -10,7 +10,7 @@ import {
   YAxis,
 } from "recharts";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+
 
 const PARAMS = {
   tds: { label: "TDS", unit: "ppm", color: "hsl(var(--chart-1))", fill: "hsl(var(--chart-1) / 0.16)" },
@@ -23,6 +23,13 @@ export const CHART_PARAMS = PARAMS;
 
 export default function ReadingsChart({ data = [], parameter = "tds", limit, rangeKey = "24h", height = 260 }) {
   const config = PARAMS[parameter] || PARAMS.tds;
+
+  // animate the first render only; live refreshes then update instantly
+  const [introAnim, setIntroAnim] = useState(true);
+  useEffect(() => {
+    const t = setTimeout(() => setIntroAnim(false), 1800);
+    return () => clearTimeout(t);
+  }, []);
 
   const series = useMemo(
     () =>
@@ -116,7 +123,7 @@ export default function ReadingsChart({ data = [], parameter = "tds", limit, ran
             fill={`url(#fill-${parameter})`}
             dot={false}
             activeDot={{ r: 3, strokeWidth: 0 }}
-            isAnimationActive={false}
+            isAnimationActive={introAnim}
           />
         </AreaChart>
       </ResponsiveContainer>
