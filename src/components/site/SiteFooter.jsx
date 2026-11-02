@@ -20,6 +20,12 @@ const PROJECT_LINKS = [
   { to: "/contact", label: "Contact" },
 ];
 
+const LEGAL_LINKS = [
+  { to: "/terms", label: "Terms & Conditions" },
+  { to: "/privacy", label: "Privacy Policy" },
+  { to: "/cookies", label: "Cookie Policy" },
+];
+
 const DASH_LINKS = [
   { to: "/dashboard", label: "Live overview" },
   { to: "/dashboard/alerts", label: "Alerts center" },
@@ -99,8 +105,15 @@ export default function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-4 border-t border-border pt-6 text-xs text-muted-foreground lg:flex-row lg:items-center lg:justify-between">
           <p>© 2026 {t("common.rights")}</p>
+          <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            {LEGAL_LINKS.map((l) => (
+              <Link key={l.to} to={l.to} className="transition-colors hover:text-primary">
+                {tr(l.label)}
+              </Link>
+            ))}
+          </nav>
           <p className="flex items-center gap-1.5">
             {tr("Developed by")}{" "}
             <Link to="/contact#developer" className="font-semibold text-foreground hover:text-primary">
