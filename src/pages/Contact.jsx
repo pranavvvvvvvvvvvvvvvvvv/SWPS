@@ -8,7 +8,14 @@ import { Label } from "@/components/ui/label";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
 import EmailLink from "@/components/site/EmailLink";
 
-const ROLES = ["Village / community representative", "Health officer", "Local operator", "Student / researcher", "Other"];
+const ROLES = [
+  "Feedback or suggestion",
+  "Village / community representative",
+  "Health officer",
+  "Local operator",
+  "Student / researcher",
+  "Other",
+];
 
 const EMPTY = { name: "", email: "", subject: "", message: "" };
 
