@@ -24,6 +24,9 @@ import FutureScope from '@/pages/FutureScope';
 import Research from '@/pages/Research';
 import Team from '@/pages/Team';
 import Contact from '@/pages/Contact';
+import Terms from '@/pages/Terms';
+import Privacy from '@/pages/Privacy';
+import Cookies from '@/pages/Cookies';
 import Overview from '@/pages/dashboard/Overview';
 import ControlLog from '@/pages/dashboard/ControlLog';
 import Prediction from '@/pages/dashboard/Prediction';
@@ -86,6 +89,9 @@ const AuthenticatedApp = () => {
           <Route path="/research" element={<Research />} />
           <Route path="/team" element={<Team />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/cookies" element={<Cookies />} />
         </Route>
 
         <Route path="/dashboard" element={<DashboardLayout />}>
