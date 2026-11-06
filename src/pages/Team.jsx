@@ -1,15 +1,24 @@
-import { Award, BookOpen, Cpu, GraduationCap, HeartHandshake, MapPin, Server, TestTube2, UserRound } from "lucide-react";
+import { Award, GraduationCap, HeartHandshake, MapPin, UserRound } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
 import InteractiveCard from "@/components/site/InteractiveCard";
 import { useAutoTranslate } from "@/lib/AutoTranslate";
 import EmailLink from "@/components/site/EmailLink";
 
 const ROLES = [
-  { icon: Cpu, role: "Firmware & sensing", detail: "ESP32 firmware, probe calibration, adaptive control logic." },
-  { icon: TestTube2, role: "Hardware & plumbing", detail: "Filter train assembly, sensor chamber, valve and enclosure." },
-  { icon: Server, role: "Cloud & dashboard", detail: "Data pipeline, dashboard, alerts and reporting." },
-  { icon: BookOpen, role: "Field validation", detail: "Site selection, community testing and manual cross-checks." },
+  { name: "Pranav", role: "Developer · full-stack & IoT", detail: "Platform, cloud data model, control logic and dashboard." },
+  { name: "Varun", role: "Firmware & sensing", detail: "ESP32 firmware, probe calibration, adaptive control logic." },
+  { name: "Sushanth", role: "Hardware & plumbing", detail: "Filter train assembly, sensor chamber, valve and enclosure." },
+  { name: "Harshini", role: "Cloud & dashboard", detail: "Data pipeline, dashboard, alerts and reporting." },
+  { name: "Pavani", role: "Field validation", detail: "Site selection, community testing and manual cross-checks." },
 ];
+
+const initials = (name) =>
+  name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
 export default function Team() {
   const tr = useAutoTranslate();
@@ -94,24 +103,25 @@ export default function Team() {
       <Section className="border-y border-border bg-secondary/30">
         <SectionHeading
           eyebrow={tr("Project team")}
-          title={tr("Roles across the build.")}
+          title={tr("The people across the build.")}
           description={tr(
-            "The work is split by discipline. Role cards below are ready for the remaining team members' names."
+            "The work is split by discipline — firmware, hardware, cloud and field validation."
           )}
         />
-        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {ROLES.map((r) => {
-            const Icon = r.icon;
             return (
-              <InteractiveCard key={r.role} className="rounded-2xl border border-border bg-card p-5">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                  <Icon className="h-4.5 w-4.5" />
-                </span>
-                <h3 className="mt-4 text-[13.5px] font-bold">{tr(r.role)}</h3>
-                <p className="mt-1.5 text-[12px] leading-relaxed text-muted-foreground">{tr(r.detail)}</p>
+              <InteractiveCard key={r.name} className="rounded-2xl border border-border bg-card p-5">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-sky-500 text-[13px] font-bold text-white shadow-sm">
+                    {initials(r.name)}
+                  </span>
+                  <h3 className="text-[15px] font-bold leading-tight">{r.name}</h3>
+                </div>
+                <p className="mt-4 text-[12px] leading-relaxed text-muted-foreground">{tr(r.detail)}</p>
                 <div className="mt-4 flex items-center gap-2 border-t border-border/70 pt-3 text-[11px] text-muted-foreground/70">
                   <UserRound className="h-3 w-3" />
-                  {tr("Team member")}
+                  {tr("Project team")}
                 </div>
               </InteractiveCard>
             );
