@@ -105,7 +105,7 @@ export default function HeroSampleCard() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[10px] uppercase tracking-[0.2em] text-sky-100/60">{t("home.sample")}</p>
-              <p className="mt-1 font-heading text-sm font-semibold">Unit SW-02 · Kothagudem</p>
+              <p className="mt-1 font-heading text-sm font-semibold">{tr("Purification unit · outlet sample")}</p>
             </div>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
               <span className="pulse-ring relative h-1.5 w-1.5 rounded-full bg-emerald-300 text-emerald-300" />
@@ -154,7 +154,7 @@ export default function HeroSampleCard() {
             <CheckCircle2 className="h-4 w-4 text-emerald-300" />
           </div>
           <p className="mt-3 text-[10px] leading-relaxed text-sky-100/35">
-            {tr("Illustrative values from a seeded demo unit — the dashboard shows live records.")}
+            {tr("Illustrative values — the dashboard shows live readings from your own units.")}
           </p>
         </motion.div>
       </motion.div>
